@@ -1,32 +1,16 @@
 {
- 
- "name": "robot_server",
-
+  "name": "robot_server",
   "version": "1.0.0",
-
   "description": "",
- 
- "main": "dist/app.js",
-
+  "main": "dist/app.js",
   "scripts": {
-    
-"start": "tsc && node dist/app.js",
-"test": "echo \"Error: no test specified\" && exit 1"
-  
-},
- 
- "author": "",
-
-  "license": "ISC",
- 
- "devDependencies": {
-    "@types/express": "^4.17.2",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.3"
+    "start": "tsc && node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
   }
-
 }
