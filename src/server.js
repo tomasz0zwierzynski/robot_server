@@ -1,4 +1,6 @@
 //server.js
+const config = require('./config.json');
+
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -8,15 +10,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 let socketPi;
-io.on('connection', function (socket){
-  console.log(socket);
-
-	socketPi = socket;
+io.use( function(socket, next) {
+	if (socket.handshake.query && socket.handshake.query.token) {
+		if ( socket.handshake.query.token === 'secret' ) {
+			next();
+		}
+	} else {
+		next( new Error('Auth error') );
+	}
+} ).on('connection', function (socket){
+  	if ( socket.handshake.query.id === 'pi' ) {
+		console.log('PI connected!');
+		socketPi = socket;
+	} 
   
-  socket.on('CH01', function (from, msg) {
-    console.log('MSG', from, ' saying ', msg);
-  });
-
+  	socket.on(config.robotChannel, function (from, msg) {
+    	console.log('MSG', from, ' saying ', msg);
+  	});
 });
 
 app.get( '/', function (req, res) { 
