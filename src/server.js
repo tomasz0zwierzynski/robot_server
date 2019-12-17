@@ -25,7 +25,7 @@ io.use( function(socket, next) {
 	} 
   
   	socket.on(config.robotChannel, function (from, msg) {
-    	console.log('MSG', from, ' saying ', msg);
+    	console.log('Message: ', from, ' is saying "', msg, '"');
   	});
 });
 
@@ -37,7 +37,7 @@ app.post( '/send', function ( req, res ) {
 	console.log(req);
 	console.log(req.body);
 	if (socketPi) {
-		socketPi.emit('CH02', req.body);
+		socketPi.emit(config.robotChannel, req.body);
 	}
 	res.send('OK');
 } );	
