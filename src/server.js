@@ -52,21 +52,26 @@ app.post( '/send', function ( req, res ) {
 
 // JWT TOKENS
 const jwt = require('jsonwebtoken');
+const db = require('./services/db');
 
-const tokens = [];
+db.createUser( { username: 'tomcio', password: '1234', roles: ['OBSERVER', 'NOT_LOGGED'] } );
+db.createUser( { username: 'admin', password: 'admin', roles: ['OBSERVER', 'NOT_LOGGED', 'ADMIN'] } );
 
 app.post( '/login', function ( req, res ) {
 	const username = req.body.user;
 	const password = req.body.pass;
 
-	if ( true ) { // jeśli login i hasło są dobre
-		const token = jwt.sign({
-			data: username
-		}, 'secret', { expiresIn: '10000' });				
+	const user = db.findUserByUsername( username );
 
-		tokens.push( token );
-
-		res.json( { token: token } );
+	if ( user ) {
+		if ( password === user.password ) { // jeśli login i hasło są dobre
+	
+			const token = jwt.sign({
+				data: username
+			}, 'secret', { expiresIn: '1h' });				
+	
+			res.json( { token: token } );
+		}
 	}
 
 	res.status(405);
@@ -78,6 +83,8 @@ app.get( '/resource', function (req, res) {
 	
 	var decoded = jwt.verify(token, 'secret' );
 	console.log( decoded );
+	
+	
 	res.json( { a: 1 } );
 } );
 

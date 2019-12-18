@@ -2,13 +2,15 @@ module.exports = {
 
     users = [],
 
+    roles = [ 'ADMIN', 'NOT_LOGGED', 'OBSERVER' ],
+
     createUser = function (user) {
         if ( user.username && user.password ) {
             this.users.push( user );
         }
     },
 
-    findUserByName = function (username) {
+    findUserByUsername = function (username) {
         return this.users.find( u => u.username === username );
     },  
 
