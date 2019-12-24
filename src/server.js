@@ -24,11 +24,11 @@ io.use( function(socket, next) {
   	if ( socket.handshake.query.id === 'pi' ) {
 		console.log('PI connected!');
 		socketPi = socket;
+	
+		socket.on(config.robotChannel, function (from, msg) {
+			console.log('Message: ', from, ' is saying "', msg, '"');
+		});
 	} 
-  
-  	socket.on(config.robotChannel, function (from, msg) {
-    	console.log('Message: ', from, ' is saying "', msg, '"');
-  	});
 });
 
 
